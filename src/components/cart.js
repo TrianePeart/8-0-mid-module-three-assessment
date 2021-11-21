@@ -6,6 +6,8 @@ let cart =({cart, total, subtotal}) =>{
     let tax = formatPrice(
      subtotal * 0.05 || formatPrice(0)) 
 
+     
+
      return (
          <div className ="cart">
              <h2>Cart</h2>
