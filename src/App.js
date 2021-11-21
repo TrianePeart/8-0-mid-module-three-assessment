@@ -3,7 +3,6 @@ import "./App.css";
 import React from "react";
 import productData from "./data/productData"
 import formatPrice from "./helpers/formatPrice"
-import { render } from "@testing-library/react";
 
 
 class App extends Component{
@@ -21,16 +20,14 @@ class App extends Component{
     }
   }
   
-  addToCart = (event) => {
-    const {cart,products} = this.state
-    const item = products.find((items) => items.id === event.target.value)
+  addToCart = (product) => {
     this.setState({
-      cart: [...cart, item]
+      cart: [...this.state.cart, product],
     })
   }
   
   deleteFromCart = (event) => {
-    const { cart } = this.state;
+    const {cart} = this.state;
     const itemIndex = Number(event.target.value);
     this.setState({
       cart: cart.filter((items, index) => index !== itemIndex),
@@ -38,30 +35,24 @@ class App extends Component{
   };
   
   subtotal =()=>{
-    return( this.state.cart.map((item)=> item.price).reduce((a,b)=>{
-      return a+b
-    },0)
-    )
-  }
+    return(this.state.cart.map((item)=> item.price).reduce((a,b)=>{return a+b},0))}
   
   buyNow = (event) =>{
     event.preventDefault()
     let tax = this.subtotal() * .05
     if (this.state.firstName === "" || this.state.lastName === "" || this.state.email === ""){
       alert("Input is not valid")
-    }else if (this.state.creditCard.length < 16){
+    }else if (this.state.creditCard.length !== 16){
       alert("Credit card number is not valid")
-    }else if (this.state.zipCode.length < 5 ){
+    }else if (this.state.zipCode.length !== 5 ){
       alert("Zip code is not valid")
     }else{
-      alert("Purchase complete")
+      alert(`Purchase complete you will be charged $${formatPrice(this.subtotal() + tax)}`)
     };
   };
 
   input = (event) =>{
-    this.setState ({
-      [event.target.name] : event.target.value
-    })
+    this.setState ({[event.target.name] : event.target.value})
   }
   
   render(){
@@ -72,7 +63,7 @@ class App extends Component{
             <h3>{product.name}</h3>
             <div> Price:{formatPrice(product.price)}</div>
             <div>
-              <button onClick={()=>this.AddToCart(product)} type="submit">Add To Cart</button>
+              <button onClick={()=>this.addToCart(product)} type="submit">Add To Cart</button>
             </div>
             <img src={product.img} alt= "product"/>
             <div>{product.description}</div>
@@ -101,7 +92,7 @@ class App extends Component{
 
     <div className = "CheckOut">
     <h2>Checkout</h2>
-          <form id="checkout" onSubmit={this.BuyNow}>
+          <form id="checkout" onSubmit={this.buyNow}>
             <label htmlFor="first-name">First Name</label>
             <input onChange={this.input} value={this.state.firstName} name="firstName" id="first-name" type="text"/>
             <br/>
@@ -115,7 +106,7 @@ class App extends Component{
             <input  onChange={this.input} name="zipCode" id="zip-code" type="number" />
             <br/>
             <label htmlFor="email">Email</label>
-            <input  onChange={this.input} name="email" id="email" type="email"/>
+            <input onChange={this.input} name="email" id="email" type="email"/>
             <br/>
             <button type="submit">Buy Now</button>
           </form>
