@@ -57,6 +57,12 @@ class App extends Component{
       alert("Purchase complete")
     };
   };
+
+  input = (event) =>{
+    this.setState ({
+      [event.target.name] : event.target.value
+    })
+  }
   
   render(){
     
@@ -92,6 +98,28 @@ class App extends Component{
     <h3>Tax: {formatPrice(tax)}</h3>
     <h3>Total: {formatPrice(this.subtotal() + tax)}</h3>
     </div>
+
+    <div className = "CheckOut">
+    <h2>Checkout</h2>
+          <form id="checkout" onSubmit={this.BuyNow}>
+            <label htmlFor="first-name">First Name</label>
+            <input onChange={this.input} value={this.state.firstName} name="firstName" id="first-name" type="text"/>
+            <br/>
+            <label htmlFor="last-name">Last Name</label>
+            <input onChange={this.input} name="lastName" id="last-name" type="text"/>
+            <br/>
+            <label htmlFor="credit-card">Credit Card</label>
+            <input onChange={this.input}  name="creditCard" id="credit-card" type="text"/>
+            <br/>
+            <label htmlFor="zip-code">Zip Code</label>
+            <input  onChange={this.input} name="zipCode" id="zip-code" type="number" />
+            <br/>
+            <label htmlFor="email">Email</label>
+            <input  onChange={this.input} name="email" id="email" type="email"/>
+            <br/>
+            <button type="submit">Buy Now</button>
+          </form>
+        </div>
     </section>
   )
 };
