@@ -62,9 +62,9 @@ class App extends Component{
         <div className="product">
             <h3>{product.name}</h3>
             <div> Price:{formatPrice(product.price)}</div>
-            <div>
+            <div><br/>
               <button onClick={()=>this.addToCart(product)} type="submit">Add To Cart</button>
-            </div>
+            </div><br/>
             <img src={product.img} alt= "product"/>
             <div>{product.description}</div>
           </div>
@@ -77,6 +77,7 @@ class App extends Component{
     
     let tax = this.subtotal() * .05
     return(
+    <aside className= "color">
     <section className="Application">
 
     <h1>My Garage Sale</h1>
@@ -113,6 +114,7 @@ class App extends Component{
           </form>
         </div>
     </section>
+    </aside>
   )
 };
 
