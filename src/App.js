@@ -1,6 +1,5 @@
-import { Component } from "react";
+import {Component} from "react";
 import "./App.css";
-import React from "react";
 import productData from "./data/productData"
 import formatPrice from "./helpers/formatPrice"
 
@@ -30,9 +29,10 @@ class App extends Component{
     const {cart} = this.state;
     const itemIndex = Number(event.target.value);
     this.setState({
-      cart: cart.filter((items, index) => index !== itemIndex),
+      cart: cart.filter((item, index) => index !== itemIndex),
     });
   };
+  //This is not working. 
   
   subtotal =()=>{
     return(this.state.cart.map((item)=> item.price).reduce((a,b)=>{return a+b},0))}
@@ -42,14 +42,14 @@ class App extends Component{
     let tax = this.subtotal() * .05
     if (this.state.firstName === "" || this.state.lastName === "" || this.state.email === ""){
       alert("Input is not valid")
-    }else if (this.state.creditCard.length !== 16){
+    }else if (this.state.creditCard.length < 16){
       alert("Credit card number is not valid")
-    }else if (this.state.zipCode.length !== 5 ){
+    }else if (this.state.zipCode.length < 5){
       alert("Zip code is not valid")
     }else{
       alert(`Purchase complete you will be charged $${formatPrice(this.subtotal() + tax)}`)
-    };
-  };
+    }
+  }
 
   input = (event) =>{
     this.setState ({[event.target.name] : event.target.value})
@@ -77,13 +77,14 @@ class App extends Component{
     
     let tax = this.subtotal() * .05
     return(
-      <section className="Application">
+    <section className="Application">
 
-    <h1>My Garage Sale</h1>;
+    <h1>My Garage Sale</h1>
 
     <div className="products">{productDisplay}</div>;
 
     <div className="Cart">
+    <h2>Cart</h2>
     <ul>{productList}</ul>
     <h3>Subtotal: {formatPrice(this.subtotal())}</h3>
     <h3>Tax: {formatPrice(tax)}</h3>
@@ -93,21 +94,21 @@ class App extends Component{
     <div className = "CheckOut">
     <h2>Checkout</h2>
           <form id="checkout" onSubmit={this.buyNow}>
-            <label htmlFor="first-name">First Name</label>
+            <label htmlFor="first-name">First Name</label> <br/>
             <input onChange={this.input} value={this.state.firstName} name="firstName" id="first-name" type="text"/>
             <br/>
-            <label htmlFor="last-name">Last Name</label>
-            <input onChange={this.input} name="lastName" id="last-name" type="text"/>
+            <label htmlFor="last-name">Last Name</label> <br/>
+            <input onChange={this.input}  name="lastName" id="last-name" type="text"/>
             <br/>
-            <label htmlFor="credit-card">Credit Card</label>
+            <label htmlFor="credit-card">Credit Card</label>  <br/>
             <input onChange={this.input}  name="creditCard" id="credit-card" type="text"/>
             <br/>
-            <label htmlFor="zip-code">Zip Code</label>
+            <label htmlFor="zip-code">Zip Code</label> <br/>
             <input  onChange={this.input} name="zipCode" id="zip-code" type="number" />
             <br/>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email</label> <br/>
             <input onChange={this.input} name="email" id="email" type="email"/>
-            <br/>
+            <br/><br/>
             <button type="submit">Buy Now</button>
           </form>
         </div>
